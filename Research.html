@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<!-- Offline iOS 9 HIG navigation fix. Keep before the original site's scripts. -->
+<script data-hig-offline-nav="1">
+(function () {
+  if (window.__higOfflineNavigationReady) return;
+  window.__higOfflineNavigationReady = true;
+  window.addEventListener('click', function (event) {
+    // Do not override opening a new tab, right-click, downloads or anchors.
+    if (event.button !== 0 || event.ctrlKey || event.metaKey ||
+        event.shiftKey || event.altKey) return;
+    var node = event.target;
+    if (node && node.nodeType === 3) node = node.parentNode;
+    while (node && node.nodeType === 1 &&
+           String(node.tagName).toLowerCase() !== 'a') node = node.parentNode;
+    if (!node || node.nodeType !== 1 || !node.getAttribute) return;
+    var href = node.getAttribute('href');
+    if (!href || /^(?:\s*#|\s*javascript:|\s*mailto:|\s*tel:|\s*data:)/i.test(href)) return;
+    if (node.hasAttribute('download')) return;
+    var target = (node.getAttribute('target') || '').toLowerCase();
+    if (target && target !== '_self' && target !== '_top' && target !== '_parent') return;
+    var resolved = document.createElement('a');
+    resolved.href = href;
+    // Only force navigation for local links; online links stay untouched.
+    if (resolved.protocol !== 'file:') return;
+    // Let the browser handle a fragment pointing at the current document.
+    if (resolved.pathname === location.pathname &&
+        resolved.search === location.search && resolved.hash) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    window.location.assign(resolved.href);
+  }, true);
+}());
+</script>
+<!-- End offline navigation fix. -->
+  
+  <title>iOS Human Interface Guidelines: Research Apps</title>
+  <link rel="stylesheet" type="text/css" href="_assets/developer.apple.com/aef9bde65728-style-1.6.2.css" />
+  <link rel="stylesheet" type="text/css" href="_assets/developer.apple.com/38e6a4507041-feedback-1.6.2.css" />
+  <meta charset='utf-8'> 
+<meta id="j-version" name="j-version" content="" />
+<meta id="build" name="build" content="edd84fb4bd09c89d482ae743e4b6980c" />
+<meta id="document-version" name="document-version" content="10.3.5" />
+<meta id="book-assignments" name="book-assignments" content="{Type/Guide}, {Topic/User Experience}" />
+<meta scheme="apple_ref" id="identifier" name="identifier" content="//apple_ref/doc/uid/TP40006556" />
+<meta id="chapterId" name="chapterId" content="TP40006556-CH72">
+<meta id="book-title" name="book-title" content="iOS Human Interface Guidelines" />
+<meta id="book-resource-type" name="book-resource-type" content="Guide" />
+<meta id="book-root" name="book-root" content="./" />
+<meta id="book-json" name="book-json" content="book.json">
+<meta id="date" name="date" content="2016-03-21" />
+<meta id="description" name="description" content="Provides guidelines for designing the user interface of an iOS app." />
+<meta id="IndexTitle" name="IndexTitle" content="" />
+<meta id="resources-uri" name="resources-uri" content="../../../../Resources/1197">
+<link id="book-index-page" rel="Start" title="" type="text/html" href="index.html">
+<!-- , next_chapter: next_chapter, previous_chapter: previous_chapter -->
+<link id="next-page" rel="Next" type="text/html" href="">
+<link id="previous-page" rel="Prev" type="text/html" href="">
+<meta id="devcenter" name="devcenter" content="<!-- DEVCENTER_NAME -->" />
+<meta id="devcenter-url" name="devcenter-url" content="<!-- DEVCENTER_URL -->" />
+<meta id="reflib" name="reflib" content="<!-- REFLIB_NAME -->" />
+
+<meta id="xcode-display" name="xcode-display" content="render" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+</head>
+
+  <body id="conceptual_flow_with_tasks" class="jazz">
+    
+    <header id="ios_header" class="hideOnPrint hideInXcode">
+  <div class="content-wrapper">
+    <p class="header-text">
+    	<a href="../../../../navigation/">iOS Developer Library
+ 		</a>
+ </p>
+    <p id="wwdr"><img id="apple_logo" src="_assets/developer.apple.com/53192ceccd03-apple2.png" height="14px" width="12px" aria-hidden="true" /><a href="https://developer.apple.com">Developer</a></p>
+  </div>
+</header>
+
+    <section id="valence">
+  <div class="content-wrapper">
+    <p id="hierarchial_navigation">
+      <span id="book_title">iOS Human Interface Guidelines</span>
+    </p>
+    <form id="search" class="hideInXcode" method="get" action="/search/index.php" accept-charset="utf-8" autocomplete="off">
+  <input type="search" id="ssi_SearchField" placeholder="Search iOS Developer Library" name="q" autocomplete="off" tabindex="2" />
+  <input type="hidden" id='platform' name='platform' value="iOS" />
+</form>
+
+      
+   
+   
+
+
+
+
+    <span class="download-text hideInXcode">
+      <a href="https://itunes.apple.com/us/book/ios-human-interface-guidelines/id877942287?mt=11">iBooks</a>
+    </span>
+
+    
+
+    <img id="shortstack" src="_assets/developer.apple.com/2b9b807ed418-shortstack_2x.png"/>
+  </div>
+</section>
+    <div class="content-wrapper">
+      <nav id="navigator" class="book-parts hideInXcode" role="navigation">
+    <ul class="nav-parts">
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH2-SW1"
+            class="part-name">
+            <a href="index.html#//apple_ref/doc/uid/TP40006556-CH66-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH66-SW1">UI Design Basics</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="index.html#//apple_ref/doc/uid/TP40006556-CH66-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH66-SW1">Designing for iOS</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Anatomy.html#//apple_ref/doc/uid/TP40006556-CH24-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH24-SW1">iOS App Anatomy</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LayoutandAppearance.html#//apple_ref/doc/uid/TP40006556-CH54-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH54-SW1">Adaptivity and Layout</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="StartingStopping.html#//apple_ref/doc/uid/TP40006556-CH52-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH52-SW1">Starting and Stopping</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Navigation.html#//apple_ref/doc/uid/TP40006556-CH53-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH53-SW1">Navigation</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Modal.html#//apple_ref/doc/uid/TP40006556-CH64-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH64-SW1">Modal Contexts</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="InteractivityInput.html#//apple_ref/doc/uid/TP40006556-CH55-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH55-SW1">Interactivity and Feedback</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Animation.html#//apple_ref/doc/uid/TP40006556-CH57-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH57-SW1">Animation</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Branding.html#//apple_ref/doc/uid/TP40006556-CH60-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH60-SW1">Branding</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ColorImagesText.html#//apple_ref/doc/uid/TP40006556-CH58-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH58-SW1">Color and Typography</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Iconography.html#//apple_ref/doc/uid/TP40006556-CH59-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH59-SW1">Icons and Graphics</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="FeedbackCommunication.html#//apple_ref/doc/uid/TP40006556-CH56-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH56-SW1">Terminology and Wording</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Integration.html#//apple_ref/doc/uid/TP40006556-CH61-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH61-SW1">Integrating with iOS</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH5-SW1"
+            class="part-name">
+            <a href="Principles.html#//apple_ref/doc/uid/TP40006556-CH4-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH4-SW1">Design Strategies</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="Principles.html#//apple_ref/doc/uid/TP40006556-CH4-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH4-SW1">Design Principles</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Process.html#//apple_ref/doc/uid/TP40006556-CH6-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH6-SW1">From Concept to Product</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="DesktopToiOS.html#//apple_ref/doc/uid/TP40006556-CH51-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH51-SW1">Case Study: From Desktop to iOS</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH31-SW1"
+            class="part-name nav-part-active open-part">
+            <a href="3DTouch.html#//apple_ref/doc/uid/TP40006556-CH71-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH71-SW1">iOS Technologies</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="3DTouch.html#//apple_ref/doc/uid/TP40006556-CH71-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH71-SW1">3D Touch</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LivePhotos.html#//apple_ref/doc/uid/TP40006556-CH74-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH74-SW1">Live Photos</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Wallet.html#//apple_ref/doc/uid/TP40006556-CH73-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH73-SW1">Wallet</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ApplePay.html#//apple_ref/doc/uid/TP40006556-CH69-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH69-SW1">Apple Pay</a>
+              </li>
+              <li class="nav-chapter nav-current-chapter">
+              	<a href="#//apple_ref/doc/uid/TP40006556-CH72-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH72-SW1">Research Apps</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="AppExtensions.html#//apple_ref/doc/uid/TP40006556-CH67-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH67-SW1">App Extensions</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="HomeKit.html#//apple_ref/doc/uid/TP40006556-CH70-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH70-SW1">HomeKit</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Multitasking.html#//apple_ref/doc/uid/TP40006556-CH38-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH38-SW1">Multitasking</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="NotificationCenter.html#//apple_ref/doc/uid/TP40006556-CH39-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH39-SW1">Notifications</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="SocialMedia.html#//apple_ref/doc/uid/TP40006556-CH34-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH34-SW1">Social Media</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="iCloud.html#//apple_ref/doc/uid/TP40006556-CH35-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH35-SW1">iCloud</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="HealthKit.html#//apple_ref/doc/uid/TP40006556-CH68-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH68-SW1">HealthKit</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="InAppPurchase.html#//apple_ref/doc/uid/TP40006556-CH36-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH36-SW1">In-App Purchase</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="GameCenter.html#//apple_ref/doc/uid/TP40006556-CH37-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH37-SW1">Game Center</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="iAdRichMediaAds.html#//apple_ref/doc/uid/TP40006556-CH41-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH41-SW1">iAd Rich Media Ads</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Printing.html#//apple_ref/doc/uid/TP40006556-CH40-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH40-SW1">AirPrint</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LocationServices.html#//apple_ref/doc/uid/TP40006556-CH42-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH42-SW1">Accessing User Data</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="QuickLook.html#//apple_ref/doc/uid/TP40006556-CH43-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH43-SW1">Quick Look</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Sound.html#//apple_ref/doc/uid/TP40006556-CH44-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH44-SW1">Sound</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="VoiceOverAccessibility.html#//apple_ref/doc/uid/TP40006556-CH45-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH45-SW1">VoiceOver</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Routing.html#//apple_ref/doc/uid/TP40006556-CH32-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH32-SW1">Routing</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="EditMenu.html#//apple_ref/doc/uid/TP40006556-CH46-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH46-SW1">Edit Menu</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="UndoRedo.html#//apple_ref/doc/uid/TP40006556-CH47-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH47-SW1">Undo and Redo</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="KeyboardInputView.html#//apple_ref/doc/uid/TP40006556-CH48-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH48-SW1">Keyboards and Input Views</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH11-SW1"
+            class="part-name">
+            <a href="Bars.html#//apple_ref/doc/uid/TP40006556-CH12-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH12-SW1">UI Elements</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="Bars.html#//apple_ref/doc/uid/TP40006556-CH12-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH12-SW1">Bars</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ContentViews.html#//apple_ref/doc/uid/TP40006556-CH13-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH13-SW1">Content Views</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Controls.html#//apple_ref/doc/uid/TP40006556-CH15-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH15-SW1">Controls</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Alerts.html#//apple_ref/doc/uid/TP40006556-CH14-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH14-SW1">Temporary Views</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH17-SW1"
+            class="part-name">
+            <a href="IconMatrix.html#//apple_ref/doc/uid/TP40006556-CH27-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH27-SW1">Icon and Image Design</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="IconMatrix.html#//apple_ref/doc/uid/TP40006556-CH27-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH27-SW1">Icon and Image Sizes</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="AppIcons.html#//apple_ref/doc/uid/TP40006556-CH19-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH19-SW1">App Icon</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LaunchImages.html#//apple_ref/doc/uid/TP40006556-CH22-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH22-SW1">Launch Files</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="BarIcons.html#//apple_ref/doc/uid/TP40006556-CH21-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH21-SW1">Template Icons</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="WebClipIcons.html#//apple_ref/doc/uid/TP40006556-CH29-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH29-SW1">Web Clip Icons</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ResizableImages.html#//apple_ref/doc/uid/TP40006556-CH30-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH30-SW1">Creating Resizable Images</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="revision-history"
+            class="part-name">
+          <a href="RevisionHistory.html#//apple_ref/doc/uid/TP40006556-CH99-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH99-SW1">Revision History</a>
+          <ul class="nav-chapters">
+            <li class="nav-chapter">
+              <a href="RevisionHistory.html#//apple_ref/doc/uid/TP40006556-CH99-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH99-SW1">Document Revision History</a>
+            </li>
+          </ul>
+        </li>
+    </ul>
+</nav>
+
+      <menu id="bashful" type="toolbar">
+  <div class="shield"></div>
+  <menuitem id="jump_to" class="menu-bar-item closed">
+  <span>On This Page</span>
+  <div class="chevron">
+    <div class="chevy chevron-left"></div>
+    <div class="chevy chevron-right"></div>
+  </div>
+  <menu type="list" class="details">
+      <ul class="list-bullet">
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH72-SW2">Onboarding</a>
+          </li>
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH72-SW3">Study-Specific Investigation</a>
+          </li>
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH72-SW4">Management Items</a>
+          </li>
+      </ul>
+  </menu>
+</menuitem>
+
+</menu>
+<div class="pixel-line"></div>
+<div class="rubber-band-gap"></div>
+<article class="chapter">
+  <a name="//apple_ref/doc/uid/TP40006556-CH72"></a><a name="//apple_ref/doc/uid/TP40006556-CH72-SW1"></a>
+
+  <h2 class='chapter-name'>Research Apps</h2>
+
+
+  
+  	<section class="section">
+  		<p class="para">
+  A research app lets iOS users participate in research studies from the convenience of their iOS devices. The predesigned screens and transitions available in Apple’s open source ResearchKit project make it easy to create a beautiful research app that’s customized for your study and enjoyable for people to use. To learn how to use ResearchKit to develop a research app for your study, see <a href="http://researchkit.org">researchkit.org</a>.
+</p>
+<div class="important clear">
+  <a name="//apple_ref/doc/uid/TP40006556-CH72-DontLinkElementID_35"></a>
+  <aside class="aside">
+    <p class="aside-title">Important
+    </p>
+    <p class="para">These guidelines are for informational purposes only and do not constitute legal advice. You should contact an attorney to obtain advice with respect to the development of a research app and any applicable laws.
+    </p>
+    
+  </aside>
+</div>
+<p class="para">
+  Typically, a research app groups customized ResearchKit screens and app-specific screens into sections that fit into three primary experiences:
+</p>
+<ul class="list-bullet">
+  <li class="item"><p class="para">
+  <span class="x-name"><a href="#//apple_ref/doc/uid/TP40006556-CH72-SW2" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH72-SW2">Onboarding</a></span>
+</p>
+</li><li class="item"><p class="para">
+  <span class="x-name"><a href="#//apple_ref/doc/uid/TP40006556-CH72-SW3" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH72-SW3">Study-specific investigation</a></span>
+</p>
+</li><li class="item"><p class="para">
+  <span class="x-name"><a href="#//apple_ref/doc/uid/TP40006556-CH72-SW4" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH72-SW4">Management items</a></span>
+</p>
+</li>
+</ul>
+<p class="para">
+  Follow the guidelines for the sections that comprise each of these experiences so that you can design a research app that helps participants feel comfortable and stay engaged.
+</p>
+
+		</section> 
+
+
+  <section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH72-SW2"></a>
+  <h3 class="section-name" tabindex="0">Onboarding</h3>
+  <p class="para">
+  The onboarding experience consists of a series of sections that introduce the study to potential participants and allow you to get their consent. Participants don’t typically revisit the onboarding sections after completing them. The onboarding experience includes the following sections:
+</p><figure class="figure">
+  
+  <span class="caption"></span>
+  <img src="Art/research_app_onboarding_2x.png" alt="image: ../Art/research_app_onboarding_2x.png" width="628" height="129" />
+</figure><p class="para">
+  You should present the sections in the onboarding experience in the order shown here—that is, introduction, eligibility, consent, and (if appropriate) permission to access data.
+</p><div class="two-columns">
+  <div class="left-column">
+    <p class="para">
+  <strong class="inline-head">Create an introduction that informs and provides a call to action.</strong> The introduction section should help people learn more about your study and tell them how to become a participant. It’s best when the introduction section also gives existing participants a quick way to log in and continue an in-progress study.
+</p>
+  </div>
+  <div class="right-column">
+    <img class="inline-graphic" src="Art/introduction_2x.png" alt="image: ../Art/introduction_2x.png" width="267" height="451" />
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/eligibility_2x.png" alt="image: ../Art/eligibility_2x.png" width="267" height="451" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  <strong class="inline-head">Determine eligibility as soon as possible.</strong> Present the eligibility section after the introduction and before the consent section (participants don’t need to view the consent section if they’re not eligible for the study). Be sure to present only the eligibility requirements that are necessary for your study. Use simple, straightforward language to describe the requirements and make it easy for people to enter information.
+</p>
+  </div>
+</div><p class="para">
+  <strong class="inline-head">Make sure participants understand your study before you get their consent.</strong> ResearchKit helps you make the consent process concise and friendly, while still allowing you to incorporate into the consent any legal requirements or requirements set by an institutional review board or ethics review board. (If your app involves conducting human subjects research, you must make sure that your app complies with the applicable App Store Guidelines, including the consent requirements.) Typically, the consent section:
+</p><ul class="list-bullet">
+  <li class="item"><p class="para">
+  Explains how the study works
+</p>
+</li><li class="item"><p class="para">
+  Ensures that participants understand the study and their responsibilities
+</p>
+</li><li class="item"><p class="para">
+  Gets the participant’s consent
+</p>
+</li>
+</ul><div class="two-columns">
+  <div class="left-column">
+    <p class="para">
+  <strong class="inline-head">Break a long consent document into easily digestible subsections.</strong> Each subsection can cover one aspect of the study, such as data gathering, data use, potential benefits, possible risks, time commitment, how to withdraw, and so on. For each subsection, use simple, straightforward language to provide a high-level overview. If necessary, provide a more detailed explanation of the subsection that participants can read by tapping a Learn More button. Participants should be able to view the full consent content before they agree to participate.
+</p>
+  </div>
+  <div class="right-column">
+    <img class="inline-graphic" src="Art/consent_study_description_2x.png" alt="image: ../Art/consent_study_description_2x.png" width="267" height="451" />
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/consent_understanding_2x.png" alt="image: ../Art/consent_understanding_2x.png" width="267" height="451" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  <strong class="inline-head">If it makes sense, provide a quiz that tests the participant’s understanding.</strong> You might choose to do this if you would be asking the participant to answer the same questions if you obtained the participant’s consent in person.
+</p>
+  </div>
+</div><p class="para">
+  <strong class="inline-head">Get the participant’s consent and, if appropriate, some contact information.</strong> After agreeing to join the study, participants receive a confirmation dialog, which should be followed by screens in which they provide their signature and contact details. Most research apps email participants a PDF version of the consent form for their records.
+</p><section class="rec-container">
+	<div class="blurb">
+		
+	</div>
+
+	<section class="left-container">
+			<p class="container-label participants-respond-to-an-alert-to-confirm-their-intent-to-join-a-study">Participants respond to an alert to confirm their intent to join a study</p>
+		<img class="inline-graphic" src="Art/consent_alert_2x.png" alt="image: ../Art/consent_alert_2x.png" width="267" height="451" />
+	</section>
+		<section class="right-container">
+				<p class="container-label participants-can-provide-their-signature-in-the-consent-process">Participants can provide their signature in the consent process</p>
+			<img class="inline-graphic" src="Art/consent_signature_2x.png" alt="image: ../Art/consent_signature_2x.png" width="267" height="451" />
+		</section>
+</section><p class="para">
+  <strong class="inline-head">Get permission if you need to access the participant’s device or data.</strong> Clearly explain why your research app needs access to location, Health app, or other data and be sure to avoid asking for access to data that isn’t critical for your study. Also ask for permission to send notifications to the participant’s device, if your app requires it.
+</p><section class="rec-container">
+	<div class="blurb">
+		
+	</div>
+
+	<section class="left-container">
+			<p class="container-label prepare-participants-to-grant-access-to-data-such-as-health-app-data">Prepare participants to grant access to data, such as Health app data</p>
+		<img class="inline-graphic" src="Art/data_access_permission_2x.png" alt="image: ../Art/data_access_permission_2x.png" width="267" height="451" />
+	</section>
+		<section class="right-container">
+				<p class="container-label let-participants-choose-the-data-they-want-to-share-with-you">Let participants choose the data they want to share with you</p>
+			<img class="inline-graphic" src="Art/health_data_request_2x.png" alt="image: ../Art/health_data_request_2x.png" width="267" height="451" />
+		</section>
+</section>
+  
+</section>
+<section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH72-SW3"></a>
+  <h3 class="section-name" tabindex="0">Study-Specific Investigation</h3>
+  <p class="para">
+  To get input from participants, your study might use surveys, active tasks, or a combination of both. Depending on the architecture of your study, participants may interact with each section multiple times or only once.
+</p><p class="para">
+  <strong class="inline-head">Create surveys that keep participants focused and engaged.</strong> ResearchKit makes it easy to present survey questions that require different types of answers, such as true or false, multiple choice, dates and times, sliding scales, and open ended text entry. As you use ResearchKit screens to create a survey, follow these guidelines to provide a great user experience:
+</p><ul class="list-bullet">
+  <li class="item"><p class="para">
+  Tell participants how many questions there are and about how long it will take to complete the survey.
+</p>
+</li><li class="item"><p class="para">
+  Use one screen per question.
+</p>
+</li><li class="item"><p class="para">
+  Show participants their progress in the survey.
+</p>
+</li><li class="item"><p class="para">
+  Keep the survey as short as possible. Several short surveys tend to work better than one long survey.
+</p>
+</li><li class="item"><p class="para">
+  For questions that require some additional explanation, use the standard font for the question and a slightly smaller font for the explanatory text.
+</p>
+</li><li class="item"><p class="para">
+  Tell participants when the survey is complete.
+</p>
+</li>
+</ul><p class="para">
+  ResearchKit provides many customizable screens you can use in your surveys. Here are a few examples of survey screens.
+</p><figure class="figure">
+  
+  <span class="caption"></span>
+  <img src="Art/ThreeQuestions_2x.png" alt="image: ../Art/ThreeQuestions_2x.png" width="613" height="338" />
+</figure><p class="para">
+  <strong class="inline-head">Make active tasks easy to understand.</strong> An active task requires participants to engage in an activity, such as speaking into the microphone, tapping their fingers on the screen, walking, or performing a memory test. Follow these guidelines to encourage participants to perform an active task and give them the best chance of success:
+</p><ul class="list-bullet">
+  <li class="item"><p class="para">
+  Describe how to perform the task using clear, simple language that everyone can understand.
+</p>
+</li><li class="item"><p class="para">
+  Mention if the task must be performed at a particular time or under specific circumstances.
+</p>
+</li><li class="item"><p class="para">
+  Make sure that participants can tell when the task is complete.
+</p>
+</li>
+</ul><p class="para">
+  Here are two examples of active tasks that ResearchKit supports.
+</p><section class="rec-container">
+	<div class="blurb">
+		
+	</div>
+
+	<section class="left-container">
+		<img class="inline-graphic" src="Art/gait_task_2x.png" alt="image: ../Art/gait_task_2x.png" width="267" height="451" />
+	</section>
+		<section class="right-container">
+			<img class="inline-graphic" src="Art/voice_task_2x.png" alt="image: ../Art/voice_task_2x.png" width="267" height="451" />
+		</section>
+</section>
+  
+</section>
+<section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH72-SW4"></a>
+  <h3 class="section-name" tabindex="0">Management Items</h3>
+  <p class="para">
+  ResearchKit provides a profile screen that gives users a way to manage their personal information while they’re in your research app. In addition, it’s a good idea to create a screen that motivates users and gives them a way to track their progress in the study. For the most part, participants should be able to access both of these areas at any time.
+</p><div class="two-columns">
+  <div class="left-column">
+    <p class="para">
+  <strong class="inline-head">Use a profile to help participants manage personal data that relates to your study.</strong> A profile screen can let participants edit data that can change during the course of the study—such as weight or sleep habits—and remind them of upcoming activities. You can also use a profile to give participants an easy way to leave the study and to view the consent document and the app’s privacy policy.
+</p>
+  </div>
+  <div class="right-column">
+    <img class="inline-graphic" src="Art/profile_2x.png" alt="image: ../Art/profile_2x.png" width="267" height="451" />
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/dashboard_2x.png" alt="image: ../Art/dashboard_2x.png" width="267" height="451" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  <strong class="inline-head">Use a dashboard to motivate participants and show progress.</strong> A dashboard screen can let you “be in the room” with the participant and encourage them to continue. If appropriate for your study, you can use a dashboard to give participants a rich set of feedback, such as daily progress, weekly assessments, results from specific activities, and even results that compare the participant’s results with aggregated results from others in the study.
+</p>
+  </div>
+</div>
+  
+</section>
+
+  	
+ 	<section id="next_previous" class="">
+    		<p class="previous-link"><a href="ApplePay.html#//apple_ref/doc/uid/TP40006556-CH69-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH69-SW1">Apple Pay</a></p>
+  			<p class="next-link"><a href="AppExtensions.html#//apple_ref/doc/uid/TP40006556-CH67-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH67-SW1">App Extensions</a></p>
+
+    <p class="copyright">Copyright &#x00a9; 2016 Apple Inc. All rights reserved. 
+  <a class="link" href="http://www.apple.com/legal/terms/site.html" target="_blank" rel="external">Terms of Use</a> | 
+  <a class="link" href="http://www.apple.com/privacy/" target="_blank" rel="external">Privacy Policy</a> | 
+  <a href="RevisionHistory.html#//apple_ref/doc/uid/TP40006556-CH99-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH99-SW1">Updated: 2016-03-21</a>
+</p>
+  </section>
+</article>
+
+    </div>
+    <div id='big_button'></div>
+    <footer id="footer">
+  <div class="content-wrapper">
+  	<div id="leave_feedback" class="button" role="button" tabindex="0">Feedback</div>
+  </div>
+  <script src="_assets/developer.apple.com/da4d8fdf38a0-devpubs-1.6.2.js" type="text/javascript" charset="utf-8"></script>
+  <script src="_assets/developer.apple.com/a804a65f067e-feedback-1.6.2.js" type="text/javascript" charset="utf-8"></script>
+  <div id="_omniture_top">
+<!-- SiteCatalyst code version: H.8. Copyright 1997-2006 Omniture, Inc. -->
+<script type="text/javascript">
+/* RSID: */
+var s_account="appleglobal,appleusdeveloper,dappdeveloperlib"
+</script>
+
+<script type="text/javascript" src="_assets/www.apple.com/ab5e8cf28d19-s_code_h.js"></script>
+<script type="text/javascript">
+s.pageName=AC.Tracking.pageName();
+s.channel="www.us.developer"
+
+/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+var s_code=s.t();if(s_code)document.write(s_code)</script>
+<!-- End SiteCatalyst code version: H.8. -->
+</div>
+
+</footer>
+
+    
+  </body>
+    <div id="blackout">
+    <div id="preload"></div>
+</div>
+<div id="modal" aria-hidden="true">
+    <div id="closebox" tabindex="0" aria-label="Close feedback form" role="button"></div>
+    <div id="sending" class="hidden">
+        <h2 tabindex="0">Sending feedback&hellip;</h2>
+        <div id="sending_img"></div>
+    </div>
+    <div id="error" class="hidden">
+        <h2 tabindex="0">We&rsquo;re sorry, an error has occurred.</h2>
+        <p>Please try submitting your feedback later.</p>
+        <div id="error_icon"></div>
+    </div>
+    <div id="success" class="hidden">
+        <h2 tabindex="0">Thank you for providing feedback!</h2>
+        <p>Your input helps improve our developer documentation.</p>
+        <div id="thank_you_icon"></div>
+    </div>
+    
+    <form id="feedback" action="#" method="post">
+        <div class="left-leaf">
+            <h2 id="helpful_title" data-asterisk="a1" tabindex="0">How helpful is this document?</h2>     
+            <sup id="a1" class="asterisk" aria-hidden="true">*</sup>
+
+            <div id="star_group" role="radiogroup" aria-required="true">
+                <label> 
+                    <input class="radio" type="radio" name="helped" value="1" /> 
+                    Very helpful
+                </label>
+                <label> 
+                    <input class="radio" type="radio" name="helped" value="2" /> 
+                    Somewhat helpful
+                </label>
+                <label>
+                    <input class="radio" type="radio" name="helped" value="3" /> 
+                    Not helpful
+                </label>
+            </div>
+        </div>
+        <div class="right-leaf">
+            <h2>How can we improve this document?</h2>
+            <div id="improve" class="checkboxes">
+                <label>
+                    <input type="checkbox" name="typo" /> 
+                    Fix typos or links
+                </label>
+                <label>
+                    <input type="checkbox" name="infoIncorrect" /> 
+                    Fix incorrect information
+                </label>
+                <label>
+                    <input type="checkbox" name="needs_examples" /> 
+                    Add or update code samples
+                </label>
+                <label>
+                    <input type="checkbox" name="needs_art" /> 
+                    Add or update illustrations
+                </label>
+                <label>
+                    <input type="checkbox" name="missingInfo" /> 
+                    Add information about...
+                </label>
+            </div>
+        </div>
+
+        <textarea id="comment" name="problem" cols="70" rows="8" placeholder="Please tell us more about your experience with this document" data-asterisk="a2" required></textarea>
+        <sup id="a2" class="asterisk" aria-hidden="true">*</sup>
+
+        <p class="fineprint">
+            <em aria-hidden="true"><span>*</span> Required information</em>
+        </p> 
+
+        <input id="submit" type="button" value="Send" />
+
+        <section id="legal">
+            <p>
+                To submit a product bug or enhancement request, please visit the 
+                <a href="https://developer.apple.com/bugreporter/" target="_blank">Bug Reporter</a> 
+                page.
+            </p>
+            <p>
+                Please read <a href="http://www.apple.com/legal/policies/ideas.html" target="_blank">Apple's Unsolicited Idea Submission Policy</a> 
+                before you send us your feedback.
+            </p> 
+        </section>
+    </form>
+</div>
+
+</div>
+</html>

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<!-- Offline iOS 9 HIG navigation fix. Keep before the original site's scripts. -->
+<script data-hig-offline-nav="1">
+(function () {
+  if (window.__higOfflineNavigationReady) return;
+  window.__higOfflineNavigationReady = true;
+  window.addEventListener('click', function (event) {
+    // Do not override opening a new tab, right-click, downloads or anchors.
+    if (event.button !== 0 || event.ctrlKey || event.metaKey ||
+        event.shiftKey || event.altKey) return;
+    var node = event.target;
+    if (node && node.nodeType === 3) node = node.parentNode;
+    while (node && node.nodeType === 1 &&
+           String(node.tagName).toLowerCase() !== 'a') node = node.parentNode;
+    if (!node || node.nodeType !== 1 || !node.getAttribute) return;
+    var href = node.getAttribute('href');
+    if (!href || /^(?:\s*#|\s*javascript:|\s*mailto:|\s*tel:|\s*data:)/i.test(href)) return;
+    if (node.hasAttribute('download')) return;
+    var target = (node.getAttribute('target') || '').toLowerCase();
+    if (target && target !== '_self' && target !== '_top' && target !== '_parent') return;
+    var resolved = document.createElement('a');
+    resolved.href = href;
+    // Only force navigation for local links; online links stay untouched.
+    if (resolved.protocol !== 'file:') return;
+    // Let the browser handle a fragment pointing at the current document.
+    if (resolved.pathname === location.pathname &&
+        resolved.search === location.search && resolved.hash) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    window.location.assign(resolved.href);
+  }, true);
+}());
+</script>
+<!-- End offline navigation fix. -->
+  
+  <title>iOS Human Interface Guidelines: Designing for iOS</title>
+  <link rel="stylesheet" type="text/css" href="_assets/developer.apple.com/aef9bde65728-style-1.6.2.css" />
+  <link rel="stylesheet" type="text/css" href="_assets/developer.apple.com/38e6a4507041-feedback-1.6.2.css" />
+  <meta charset='utf-8'> 
+<meta id="j-version" name="j-version" content="" />
+<meta id="build" name="build" content="23f4c08efa634ef7f5ec575aa21a64a0" />
+<meta id="document-version" name="document-version" content="10.3.5" />
+<meta id="book-assignments" name="book-assignments" content="{Type/Guide}, {Topic/User Experience}" />
+<meta scheme="apple_ref" id="identifier" name="identifier" content="//apple_ref/doc/uid/TP40006556" />
+<meta id="chapterId" name="chapterId" content="TP40006556-CH66">
+<meta id="book-title" name="book-title" content="iOS Human Interface Guidelines" />
+<meta id="book-resource-type" name="book-resource-type" content="Guide" />
+<meta id="book-root" name="book-root" content="./" />
+<meta id="book-json" name="book-json" content="book.json">
+<meta id="date" name="date" content="2016-03-21" />
+<meta id="description" name="description" content="Provides guidelines for designing the user interface of an iOS app." />
+<meta id="IndexTitle" name="IndexTitle" content="" />
+<meta id="resources-uri" name="resources-uri" content="../../../../Resources/1197">
+<link id="book-index-page" rel="Start" title="" type="text/html" href="index.html">
+<!-- , next_chapter: next_chapter, previous_chapter: previous_chapter -->
+<link id="next-page" rel="Next" type="text/html" href="">
+<link id="previous-page" rel="Prev" type="text/html" href="">
+<meta id="devcenter" name="devcenter" content="<!-- DEVCENTER_NAME -->" />
+<meta id="devcenter-url" name="devcenter-url" content="<!-- DEVCENTER_URL -->" />
+<meta id="reflib" name="reflib" content="<!-- REFLIB_NAME -->" />
+
+<meta id="xcode-display" name="xcode-display" content="render" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+</head>
+
+  <body id="conceptual_flow_with_tasks" class="jazz">
+    	<a name="//apple_ref/doc/uid/TP40006556" title="iOS Human Interface Guidelines"></a>
+
+    <header id="ios_header" class="hideOnPrint hideInXcode">
+  <div class="content-wrapper">
+    <p class="header-text">
+    	<a href="../../../../navigation/">iOS Developer Library
+ 		</a>
+ </p>
+    <p id="wwdr"><img id="apple_logo" src="_assets/developer.apple.com/53192ceccd03-apple2.png" height="14px" width="12px" aria-hidden="true" /><a href="https://developer.apple.com">Developer</a></p>
+  </div>
+</header>
+
+    <section id="valence">
+  <div class="content-wrapper">
+    <p id="hierarchial_navigation">
+      <span id="book_title">iOS Human Interface Guidelines</span>
+    </p>
+    <form id="search" class="hideInXcode" method="get" action="/search/index.php" accept-charset="utf-8" autocomplete="off">
+  <input type="search" id="ssi_SearchField" placeholder="Search iOS Developer Library" name="q" autocomplete="off" tabindex="2" />
+  <input type="hidden" id='platform' name='platform' value="iOS" />
+</form>
+
+      
+   
+   
+
+
+
+
+    <span class="download-text hideInXcode">
+      <a href="https://itunes.apple.com/us/book/ios-human-interface-guidelines/id877942287?mt=11">iBooks</a>
+    </span>
+
+    
+
+    <img id="shortstack" src="_assets/developer.apple.com/2b9b807ed418-shortstack_2x.png"/>
+  </div>
+</section>
+    <div class="content-wrapper">
+      <nav id="navigator" class="book-parts hideInXcode" role="navigation">
+    <ul class="nav-parts">
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH2-SW1"
+            class="part-name nav-part-active open-part">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH66-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH66-SW1">UI Design Basics</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter nav-current-chapter">
+              	<a href="#//apple_ref/doc/uid/TP40006556-CH66-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH66-SW1">Designing for iOS</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Anatomy.html#//apple_ref/doc/uid/TP40006556-CH24-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH24-SW1">iOS App Anatomy</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LayoutandAppearance.html#//apple_ref/doc/uid/TP40006556-CH54-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH54-SW1">Adaptivity and Layout</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="StartingStopping.html#//apple_ref/doc/uid/TP40006556-CH52-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH52-SW1">Starting and Stopping</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Navigation.html#//apple_ref/doc/uid/TP40006556-CH53-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH53-SW1">Navigation</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Modal.html#//apple_ref/doc/uid/TP40006556-CH64-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH64-SW1">Modal Contexts</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="InteractivityInput.html#//apple_ref/doc/uid/TP40006556-CH55-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH55-SW1">Interactivity and Feedback</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Animation.html#//apple_ref/doc/uid/TP40006556-CH57-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH57-SW1">Animation</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Branding.html#//apple_ref/doc/uid/TP40006556-CH60-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH60-SW1">Branding</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ColorImagesText.html#//apple_ref/doc/uid/TP40006556-CH58-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH58-SW1">Color and Typography</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Iconography.html#//apple_ref/doc/uid/TP40006556-CH59-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH59-SW1">Icons and Graphics</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="FeedbackCommunication.html#//apple_ref/doc/uid/TP40006556-CH56-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH56-SW1">Terminology and Wording</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Integration.html#//apple_ref/doc/uid/TP40006556-CH61-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH61-SW1">Integrating with iOS</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH5-SW1"
+            class="part-name">
+            <a href="Principles.html#//apple_ref/doc/uid/TP40006556-CH4-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH4-SW1">Design Strategies</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="Principles.html#//apple_ref/doc/uid/TP40006556-CH4-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH4-SW1">Design Principles</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Process.html#//apple_ref/doc/uid/TP40006556-CH6-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH6-SW1">From Concept to Product</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="DesktopToiOS.html#//apple_ref/doc/uid/TP40006556-CH51-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH51-SW1">Case Study: From Desktop to iOS</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH31-SW1"
+            class="part-name">
+            <a href="3DTouch.html#//apple_ref/doc/uid/TP40006556-CH71-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH71-SW1">iOS Technologies</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="3DTouch.html#//apple_ref/doc/uid/TP40006556-CH71-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH71-SW1">3D Touch</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LivePhotos.html#//apple_ref/doc/uid/TP40006556-CH74-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH74-SW1">Live Photos</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Wallet.html#//apple_ref/doc/uid/TP40006556-CH73-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH73-SW1">Wallet</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ApplePay.html#//apple_ref/doc/uid/TP40006556-CH69-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH69-SW1">Apple Pay</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Research.html#//apple_ref/doc/uid/TP40006556-CH72-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH72-SW1">Research Apps</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="AppExtensions.html#//apple_ref/doc/uid/TP40006556-CH67-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH67-SW1">App Extensions</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="HomeKit.html#//apple_ref/doc/uid/TP40006556-CH70-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH70-SW1">HomeKit</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Multitasking.html#//apple_ref/doc/uid/TP40006556-CH38-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH38-SW1">Multitasking</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="NotificationCenter.html#//apple_ref/doc/uid/TP40006556-CH39-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH39-SW1">Notifications</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="SocialMedia.html#//apple_ref/doc/uid/TP40006556-CH34-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH34-SW1">Social Media</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="iCloud.html#//apple_ref/doc/uid/TP40006556-CH35-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH35-SW1">iCloud</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="HealthKit.html#//apple_ref/doc/uid/TP40006556-CH68-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH68-SW1">HealthKit</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="InAppPurchase.html#//apple_ref/doc/uid/TP40006556-CH36-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH36-SW1">In-App Purchase</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="GameCenter.html#//apple_ref/doc/uid/TP40006556-CH37-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH37-SW1">Game Center</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="iAdRichMediaAds.html#//apple_ref/doc/uid/TP40006556-CH41-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH41-SW1">iAd Rich Media Ads</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Printing.html#//apple_ref/doc/uid/TP40006556-CH40-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH40-SW1">AirPrint</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LocationServices.html#//apple_ref/doc/uid/TP40006556-CH42-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH42-SW1">Accessing User Data</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="QuickLook.html#//apple_ref/doc/uid/TP40006556-CH43-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH43-SW1">Quick Look</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Sound.html#//apple_ref/doc/uid/TP40006556-CH44-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH44-SW1">Sound</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="VoiceOverAccessibility.html#//apple_ref/doc/uid/TP40006556-CH45-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH45-SW1">VoiceOver</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Routing.html#//apple_ref/doc/uid/TP40006556-CH32-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH32-SW1">Routing</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="EditMenu.html#//apple_ref/doc/uid/TP40006556-CH46-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH46-SW1">Edit Menu</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="UndoRedo.html#//apple_ref/doc/uid/TP40006556-CH47-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH47-SW1">Undo and Redo</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="KeyboardInputView.html#//apple_ref/doc/uid/TP40006556-CH48-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH48-SW1">Keyboards and Input Views</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH11-SW1"
+            class="part-name">
+            <a href="Bars.html#//apple_ref/doc/uid/TP40006556-CH12-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH12-SW1">UI Elements</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="Bars.html#//apple_ref/doc/uid/TP40006556-CH12-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH12-SW1">Bars</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ContentViews.html#//apple_ref/doc/uid/TP40006556-CH13-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH13-SW1">Content Views</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Controls.html#//apple_ref/doc/uid/TP40006556-CH15-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH15-SW1">Controls</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Alerts.html#//apple_ref/doc/uid/TP40006556-CH14-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH14-SW1">Temporary Views</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH17-SW1"
+            class="part-name">
+            <a href="IconMatrix.html#//apple_ref/doc/uid/TP40006556-CH27-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH27-SW1">Icon and Image Design</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="IconMatrix.html#//apple_ref/doc/uid/TP40006556-CH27-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH27-SW1">Icon and Image Sizes</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="AppIcons.html#//apple_ref/doc/uid/TP40006556-CH19-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH19-SW1">App Icon</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LaunchImages.html#//apple_ref/doc/uid/TP40006556-CH22-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH22-SW1">Launch Files</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="BarIcons.html#//apple_ref/doc/uid/TP40006556-CH21-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH21-SW1">Template Icons</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="WebClipIcons.html#//apple_ref/doc/uid/TP40006556-CH29-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH29-SW1">Web Clip Icons</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ResizableImages.html#//apple_ref/doc/uid/TP40006556-CH30-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH30-SW1">Creating Resizable Images</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="revision-history"
+            class="part-name">
+          <a href="RevisionHistory.html#//apple_ref/doc/uid/TP40006556-CH99-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH99-SW1">Revision History</a>
+          <ul class="nav-chapters">
+            <li class="nav-chapter">
+              <a href="RevisionHistory.html#//apple_ref/doc/uid/TP40006556-CH99-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH99-SW1">Document Revision History</a>
+            </li>
+          </ul>
+        </li>
+    </ul>
+</nav>
+
+      <menu id="bashful" type="toolbar">
+  <div class="shield"></div>
+  <menuitem id="jump_to" class="menu-bar-item closed">
+  <span>On This Page</span>
+  <div class="chevron">
+    <div class="chevy chevron-left"></div>
+    <div class="chevy chevron-right"></div>
+  </div>
+  <menu type="list" class="details">
+      <ul class="list-bullet">
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH66-SW2">Defer to Content</a>
+          </li>
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH66-SW3">Provide Clarity</a>
+          </li>
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH66-SW4">Use Depth to Communicate</a>
+          </li>
+      </ul>
+  </menu>
+</menuitem>
+
+</menu>
+<div class="pixel-line"></div>
+<div class="rubber-band-gap"></div>
+<article class="chapter">
+  <a name="//apple_ref/doc/uid/TP40006556-CH66"></a><a name="//apple_ref/doc/uid/TP40006556-CH66-SW1"></a>
+      <a name="//apple_ref/doc/uid/TP40006556-CH2"></a><a name="//apple_ref/doc/uid/TP40006556-CH2-SW1"></a>
+
+  <h2 class='chapter-name'>Designing for iOS</h2>
+
+
+  
+  	<section class="section">
+  		<p class="para">
+  iOS embodies the following themes:
+</p>
+<ul class="list-bullet">
+  <li class="item"><p class="para">
+  <strong class="inline-head">Deference.</strong> The UI helps people understand and interact with the content, but never competes with it.
+</p>
+</li><li class="item"><p class="para">
+  <strong class="inline-head">Clarity.</strong> Text is legible at every size, icons are precise and lucid, adornments are subtle and appropriate, and a sharpened focus on functionality motivates the design.
+</p>
+</li><li class="item"><p class="para">
+  <strong class="inline-head">Depth.</strong> Visual layers and realistic motion impart vitality and heighten people’s delight and understanding.
+</p>
+</li>
+</ul>
+<figure class="figure">
+  
+  <span class="caption"></span>
+  <img src="Art/weather_app_7_2x.png" alt="image: ../Art/weather_app_7_2x.png" width="256" height="438" />
+</figure>
+<p class="para">
+  Whether you’re redesigning an older app or creating a new one, consider approaching the job in this way:
+</p>
+<ul class="list-bullet">
+  <li class="item"><p class="para">
+  First, look past the UI to the app’s core functionality and affirm its relevance. 
+</p>
+</li><li class="item"><p class="para">
+  Next, use the themes of iOS to inform the design of the UI and the user experience. Add details and embellishments with care and never gratuitously.
+</p>
+</li><li class="item"><p class="para">
+  Finally, be sure to design your UI to adapt to various devices and modes so that users can enjoy your app in as many contexts as possible.
+</p>
+</li>
+</ul>
+<p class="para">
+  Throughout the process, be prepared to defy precedent, question assumptions, and let a focus on content and functionality motivate every design decision.
+</p>
+
+		</section> 
+
+
+  <section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH66-SW2"></a>
+  <h3 class="section-name" tabindex="0">Defer to Content</h3>
+  <p class="para">
+  Although a crisp, beautiful UI and fluid motion are highlights of the iOS experience, the user’s content is at its heart. 
+</p><p class="para">
+  Here are some ways to make sure that your designs elevate functionality and defer to the user’s content.
+</p><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/weather_focus_2x.png" alt="image: ../Art/weather_focus_2x.png" width="192" height="328" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  <strong class="inline-head">Take advantage of the whole screen.</strong> Weather is a great example of this approach: The beautiful, full-screen depiction of a location’s current weather instantly conveys the most important information, with room to spare for hourly data.
+</p>
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <p class="para">
+  <strong class="inline-head">Reconsider visual indicators of physicality and realism.</strong> Bezels, gradients, and drop shadows sometimes lead to heavier UI elements that can overpower or compete with the content. Instead, focus on the content and let the UI play a supporting role.
+</p>
+  </div>
+  <div class="right-column">
+    <img class="inline-graphic" src="Art/restrain_visual_indicators_2x.png" alt="image: ../Art/restrain_visual_indicators_2x.png" width="192" height="328" />
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/embrace_translucency_2x.png" alt="image: ../Art/embrace_translucency_2x.png" width="192" height="328" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  <strong class="inline-head">Let translucent UI elements hint at the content behind them.</strong> Translucent elements—such as Control Center—provide context, help users see that more content is available, and can signal transience. In iOS, a translucent element blurs only the content directly behind it—giving the impression of looking through rice paper—it doesn’t blur the rest of the screen.
+</p>
+  </div>
+</div>
+  
+</section>
+<section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH66-SW3"></a>
+  <h3 class="section-name" tabindex="0">Provide Clarity</h3>
+  <p class="para">
+  Providing clarity is another way to ensure that content is paramount in your app. Here are some ways to make the most important content and functionality clear and easy to interact with.
+</p><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/use_white_space_2x.png" alt="image: ../Art/use_white_space_2x.png" width="192" height="328" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  <strong class="inline-head">Use plenty of negative space.</strong> Negative space makes important content and functionality more noticeable and easier to understand. Negative space can also impart a sense of calm and tranquility, and it can make an app look more focused and efficient.
+</p>
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <p class="para">
+  <strong class="inline-head">Let color simplify the UI.</strong> A key color—such as yellow in Notes—highlights important state information and subtly indicates interactivity. It also gives an app a consistent visual theme. The built-in apps use a family of pure, clean system colors that look good at every tint and on both dark and light backgrounds.
+</p>
+  </div>
+  <div class="right-column">
+    <img class="inline-graphic" src="Art/notes_color_2x.png" alt="image: ../Art/notes_color_2x.png" width="192" height="328" />
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/mail_message_fonts_2x.png" alt="image: ../Art/mail_message_fonts_2x.png" width="192" height="328" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  <strong class="inline-head">Ensure legibility by using the system font.</strong> San Francisco (the iOS system font) works with Dynamic Type to automatically adjust letter spacing and line height so that text is easy to read and looks great at every size. Whether you use San Francisco or a custom font, be sure to adopt Dynamic Type so your app can respond when the user chooses a different text size.
+</p>
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <p class="para">
+  <strong class="inline-head">Embrace borderless buttons.</strong> By default, all bar buttons are borderless. In content areas, a borderless button uses context, color, and a call-to-action title to indicate interactivity. And when it makes sense, a content-area button can display a thin border or tinted background that makes it distinctive.
+</p>
+  </div>
+  <div class="right-column">
+    <img class="inline-graphic" src="Art/contact_card_2x.png" alt="image: ../Art/contact_card_2x.png" width="192" height="320" />
+  </div>
+</div>
+  
+</section>
+<section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH66-SW4"></a>
+  <h3 class="section-name" tabindex="0">Use Depth to Communicate</h3>
+  <p class="para">
+  iOS often displays content in distinct layers that convey hierarchy and position, and that help users understand the relationships among onscreen objects.
+</p><div class="two-columns">
+  <div class="left-column">
+    <p class="para">
+  On a device that supports 3D Touch, peek, pop, and quick actions give users access to important functionality without losing their context.
+</p>
+  </div>
+  <div class="right-column">
+    <img class="inline-graphic" src="Art/webview_peek-30_2x.png" alt="image: ../Art/webview_peek-30_2x.png" width="198" height="343" />
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/folder_2x.png" alt="image: ../Art/folder_2x.png" width="192" height="328" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  By using a translucent background and appearing to float above the Home screen, folders separate their content from the rest of the screen.
+</p>
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <p class="para">
+  Reminders displays lists in layers, as shown here. When users work with one list, the other lists are collected together at the bottom of the screen.
+</p>
+  </div>
+  <div class="right-column">
+    <img class="inline-graphic" src="Art/layered-reminders_2x.png" alt="image: ../Art/layered-reminders_2x.png" width="192" height="328" />
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/cal_year_2x.png" alt="image: ../Art/cal_year_2x.png" width="192" height="328" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  Calendar uses enhanced transitions to give users a sense of hierarchy and depth as they move between viewing years, months, and days. In the scrolling year view shown here, users can instantly see today’s date and perform other calendar tasks.
+</p>
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <p class="para">
+  When users select a month, the year view zooms in and reveals the month view. Today’s date remains highlighted and the year appears in the back button, so users know exactly where they are, where they came from, and how to get back. 
+</p>
+  </div>
+  <div class="right-column">
+    <img class="inline-graphic" src="Art/cal_month_2x.png" alt="image: ../Art/cal_month_2x.png" width="192" height="328" />
+  </div>
+</div><div class="two-columns">
+  <div class="left-column">
+    <img class="inline-graphic" src="Art/cal_day_2x.png" alt="image: ../Art/cal_day_2x.png" width="192" height="328" />
+  </div>
+  <div class="right-column">
+    <p class="para">
+  A similar transition happens when users select a day: The month view appears to split apart, pushing the current week to the top of the screen and revealing the hourly view of the selected day. With each transition, Calendar reinforces the hierarchical relationship between years, months, and days.
+</p>
+  </div>
+</div>
+  
+</section>
+
+  	
+ 	<section id="next_previous" class="">
+  			<p class="next-link"><a href="Anatomy.html#//apple_ref/doc/uid/TP40006556-CH24-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH24-SW1">iOS App Anatomy</a></p>
+
+    <p class="copyright">Copyright &#x00a9; 2016 Apple Inc. All rights reserved. 
+  <a class="link" href="http://www.apple.com/legal/terms/site.html" target="_blank" rel="external">Terms of Use</a> | 
+  <a class="link" href="http://www.apple.com/privacy/" target="_blank" rel="external">Privacy Policy</a> | 
+  <a href="RevisionHistory.html#//apple_ref/doc/uid/TP40006556-CH99-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH99-SW1">Updated: 2016-03-21</a>
+</p>
+  </section>
+</article>
+
+    </div>
+    <div id='big_button'></div>
+    <footer id="footer">
+  <div class="content-wrapper">
+  	<div id="leave_feedback" class="button" role="button" tabindex="0">Feedback</div>
+  </div>
+  <script src="_assets/developer.apple.com/da4d8fdf38a0-devpubs-1.6.2.js" type="text/javascript" charset="utf-8"></script>
+  <script src="_assets/developer.apple.com/a804a65f067e-feedback-1.6.2.js" type="text/javascript" charset="utf-8"></script>
+  <div id="_omniture_top">
+<!-- SiteCatalyst code version: H.8. Copyright 1997-2006 Omniture, Inc. -->
+<script type="text/javascript">
+/* RSID: */
+var s_account="appleglobal,appleusdeveloper,dappdeveloperlib"
+</script>
+
+<script type="text/javascript" src="_assets/www.apple.com/ab5e8cf28d19-s_code_h.js"></script>
+<script type="text/javascript">
+s.pageName=AC.Tracking.pageName();
+s.channel="www.us.developer"
+
+/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+var s_code=s.t();if(s_code)document.write(s_code)</script>
+<!-- End SiteCatalyst code version: H.8. -->
+</div>
+
+</footer>
+
+    
+  </body>
+    <div id="blackout">
+    <div id="preload"></div>
+</div>
+<div id="modal" aria-hidden="true">
+    <div id="closebox" tabindex="0" aria-label="Close feedback form" role="button"></div>
+    <div id="sending" class="hidden">
+        <h2 tabindex="0">Sending feedback&hellip;</h2>
+        <div id="sending_img"></div>
+    </div>
+    <div id="error" class="hidden">
+        <h2 tabindex="0">We&rsquo;re sorry, an error has occurred.</h2>
+        <p>Please try submitting your feedback later.</p>
+        <div id="error_icon"></div>
+    </div>
+    <div id="success" class="hidden">
+        <h2 tabindex="0">Thank you for providing feedback!</h2>
+        <p>Your input helps improve our developer documentation.</p>
+        <div id="thank_you_icon"></div>
+    </div>
+    
+    <form id="feedback" action="#" method="post">
+        <div class="left-leaf">
+            <h2 id="helpful_title" data-asterisk="a1" tabindex="0">How helpful is this document?</h2>     
+            <sup id="a1" class="asterisk" aria-hidden="true">*</sup>
+
+            <div id="star_group" role="radiogroup" aria-required="true">
+                <label> 
+                    <input class="radio" type="radio" name="helped" value="1" /> 
+                    Very helpful
+                </label>
+                <label> 
+                    <input class="radio" type="radio" name="helped" value="2" /> 
+                    Somewhat helpful
+                </label>
+                <label>
+                    <input class="radio" type="radio" name="helped" value="3" /> 
+                    Not helpful
+                </label>
+            </div>
+        </div>
+        <div class="right-leaf">
+            <h2>How can we improve this document?</h2>
+            <div id="improve" class="checkboxes">
+                <label>
+                    <input type="checkbox" name="typo" /> 
+                    Fix typos or links
+                </label>
+                <label>
+                    <input type="checkbox" name="infoIncorrect" /> 
+                    Fix incorrect information
+                </label>
+                <label>
+                    <input type="checkbox" name="needs_examples" /> 
+                    Add or update code samples
+                </label>
+                <label>
+                    <input type="checkbox" name="needs_art" /> 
+                    Add or update illustrations
+                </label>
+                <label>
+                    <input type="checkbox" name="missingInfo" /> 
+                    Add information about...
+                </label>
+            </div>
+        </div>
+
+        <textarea id="comment" name="problem" cols="70" rows="8" placeholder="Please tell us more about your experience with this document" data-asterisk="a2" required></textarea>
+        <sup id="a2" class="asterisk" aria-hidden="true">*</sup>
+
+        <p class="fineprint">
+            <em aria-hidden="true"><span>*</span> Required information</em>
+        </p> 
+
+        <input id="submit" type="button" value="Send" />
+
+        <section id="legal">
+            <p>
+                To submit a product bug or enhancement request, please visit the 
+                <a href="https://developer.apple.com/bugreporter/" target="_blank">Bug Reporter</a> 
+                page.
+            </p>
+            <p>
+                Please read <a href="http://www.apple.com/legal/policies/ideas.html" target="_blank">Apple's Unsolicited Idea Submission Policy</a> 
+                before you send us your feedback.
+            </p> 
+        </section>
+    </form>
+</div>
+
+</div>
+</html>

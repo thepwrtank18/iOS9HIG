@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<!-- Offline iOS 9 HIG navigation fix. Keep before the original site's scripts. -->
+<script data-hig-offline-nav="1">
+(function () {
+  if (window.__higOfflineNavigationReady) return;
+  window.__higOfflineNavigationReady = true;
+  window.addEventListener('click', function (event) {
+    // Do not override opening a new tab, right-click, downloads or anchors.
+    if (event.button !== 0 || event.ctrlKey || event.metaKey ||
+        event.shiftKey || event.altKey) return;
+    var node = event.target;
+    if (node && node.nodeType === 3) node = node.parentNode;
+    while (node && node.nodeType === 1 &&
+           String(node.tagName).toLowerCase() !== 'a') node = node.parentNode;
+    if (!node || node.nodeType !== 1 || !node.getAttribute) return;
+    var href = node.getAttribute('href');
+    if (!href || /^(?:\s*#|\s*javascript:|\s*mailto:|\s*tel:|\s*data:)/i.test(href)) return;
+    if (node.hasAttribute('download')) return;
+    var target = (node.getAttribute('target') || '').toLowerCase();
+    if (target && target !== '_self' && target !== '_top' && target !== '_parent') return;
+    var resolved = document.createElement('a');
+    resolved.href = href;
+    // Only force navigation for local links; online links stay untouched.
+    if (resolved.protocol !== 'file:') return;
+    // Let the browser handle a fragment pointing at the current document.
+    if (resolved.pathname === location.pathname &&
+        resolved.search === location.search && resolved.hash) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    window.location.assign(resolved.href);
+  }, true);
+}());
+</script>
+<!-- End offline navigation fix. -->
+  
+  <title>iOS Human Interface Guidelines: App Extensions</title>
+  <link rel="stylesheet" type="text/css" href="_assets/developer.apple.com/aef9bde65728-style-1.6.2.css" />
+  <link rel="stylesheet" type="text/css" href="_assets/developer.apple.com/38e6a4507041-feedback-1.6.2.css" />
+  <meta charset='utf-8'> 
+<meta id="j-version" name="j-version" content="" />
+<meta id="build" name="build" content="edd84fb4bd09c89d482ae743e4b6980c" />
+<meta id="document-version" name="document-version" content="10.3.5" />
+<meta id="book-assignments" name="book-assignments" content="{Type/Guide}, {Topic/User Experience}" />
+<meta scheme="apple_ref" id="identifier" name="identifier" content="//apple_ref/doc/uid/TP40006556" />
+<meta id="chapterId" name="chapterId" content="TP40006556-CH67">
+<meta id="book-title" name="book-title" content="iOS Human Interface Guidelines" />
+<meta id="book-resource-type" name="book-resource-type" content="Guide" />
+<meta id="book-root" name="book-root" content="./" />
+<meta id="book-json" name="book-json" content="book.json">
+<meta id="date" name="date" content="2016-03-21" />
+<meta id="description" name="description" content="Provides guidelines for designing the user interface of an iOS app." />
+<meta id="IndexTitle" name="IndexTitle" content="" />
+<meta id="resources-uri" name="resources-uri" content="../../../../Resources/1197">
+<link id="book-index-page" rel="Start" title="" type="text/html" href="index.html">
+<!-- , next_chapter: next_chapter, previous_chapter: previous_chapter -->
+<link id="next-page" rel="Next" type="text/html" href="">
+<link id="previous-page" rel="Prev" type="text/html" href="">
+<meta id="devcenter" name="devcenter" content="<!-- DEVCENTER_NAME -->" />
+<meta id="devcenter-url" name="devcenter-url" content="<!-- DEVCENTER_URL -->" />
+<meta id="reflib" name="reflib" content="<!-- REFLIB_NAME -->" />
+
+<meta id="xcode-display" name="xcode-display" content="render" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+</head>
+
+  <body id="conceptual_flow_with_tasks" class="jazz">
+    
+    <header id="ios_header" class="hideOnPrint hideInXcode">
+  <div class="content-wrapper">
+    <p class="header-text">
+    	<a href="../../../../navigation/">iOS Developer Library
+ 		</a>
+ </p>
+    <p id="wwdr"><img id="apple_logo" src="_assets/developer.apple.com/53192ceccd03-apple2.png" height="14px" width="12px" aria-hidden="true" /><a href="https://developer.apple.com">Developer</a></p>
+  </div>
+</header>
+
+    <section id="valence">
+  <div class="content-wrapper">
+    <p id="hierarchial_navigation">
+      <span id="book_title">iOS Human Interface Guidelines</span>
+    </p>
+    <form id="search" class="hideInXcode" method="get" action="/search/index.php" accept-charset="utf-8" autocomplete="off">
+  <input type="search" id="ssi_SearchField" placeholder="Search iOS Developer Library" name="q" autocomplete="off" tabindex="2" />
+  <input type="hidden" id='platform' name='platform' value="iOS" />
+</form>
+
+      
+   
+   
+
+
+
+
+    <span class="download-text hideInXcode">
+      <a href="https://itunes.apple.com/us/book/ios-human-interface-guidelines/id877942287?mt=11">iBooks</a>
+    </span>
+
+    
+
+    <img id="shortstack" src="_assets/developer.apple.com/2b9b807ed418-shortstack_2x.png"/>
+  </div>
+</section>
+    <div class="content-wrapper">
+      <nav id="navigator" class="book-parts hideInXcode" role="navigation">
+    <ul class="nav-parts">
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH2-SW1"
+            class="part-name">
+            <a href="index.html#//apple_ref/doc/uid/TP40006556-CH66-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH66-SW1">UI Design Basics</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="index.html#//apple_ref/doc/uid/TP40006556-CH66-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH66-SW1">Designing for iOS</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Anatomy.html#//apple_ref/doc/uid/TP40006556-CH24-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH24-SW1">iOS App Anatomy</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LayoutandAppearance.html#//apple_ref/doc/uid/TP40006556-CH54-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH54-SW1">Adaptivity and Layout</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="StartingStopping.html#//apple_ref/doc/uid/TP40006556-CH52-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH52-SW1">Starting and Stopping</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Navigation.html#//apple_ref/doc/uid/TP40006556-CH53-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH53-SW1">Navigation</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Modal.html#//apple_ref/doc/uid/TP40006556-CH64-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH64-SW1">Modal Contexts</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="InteractivityInput.html#//apple_ref/doc/uid/TP40006556-CH55-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH55-SW1">Interactivity and Feedback</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Animation.html#//apple_ref/doc/uid/TP40006556-CH57-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH57-SW1">Animation</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Branding.html#//apple_ref/doc/uid/TP40006556-CH60-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH60-SW1">Branding</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ColorImagesText.html#//apple_ref/doc/uid/TP40006556-CH58-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH58-SW1">Color and Typography</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Iconography.html#//apple_ref/doc/uid/TP40006556-CH59-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH59-SW1">Icons and Graphics</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="FeedbackCommunication.html#//apple_ref/doc/uid/TP40006556-CH56-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH56-SW1">Terminology and Wording</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Integration.html#//apple_ref/doc/uid/TP40006556-CH61-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH61-SW1">Integrating with iOS</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH5-SW1"
+            class="part-name">
+            <a href="Principles.html#//apple_ref/doc/uid/TP40006556-CH4-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH4-SW1">Design Strategies</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="Principles.html#//apple_ref/doc/uid/TP40006556-CH4-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH4-SW1">Design Principles</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Process.html#//apple_ref/doc/uid/TP40006556-CH6-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH6-SW1">From Concept to Product</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="DesktopToiOS.html#//apple_ref/doc/uid/TP40006556-CH51-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH51-SW1">Case Study: From Desktop to iOS</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH31-SW1"
+            class="part-name nav-part-active open-part">
+            <a href="3DTouch.html#//apple_ref/doc/uid/TP40006556-CH71-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH71-SW1">iOS Technologies</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="3DTouch.html#//apple_ref/doc/uid/TP40006556-CH71-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH71-SW1">3D Touch</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LivePhotos.html#//apple_ref/doc/uid/TP40006556-CH74-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH74-SW1">Live Photos</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Wallet.html#//apple_ref/doc/uid/TP40006556-CH73-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH73-SW1">Wallet</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ApplePay.html#//apple_ref/doc/uid/TP40006556-CH69-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH69-SW1">Apple Pay</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Research.html#//apple_ref/doc/uid/TP40006556-CH72-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH72-SW1">Research Apps</a>
+              </li>
+              <li class="nav-chapter nav-current-chapter">
+              	<a href="#//apple_ref/doc/uid/TP40006556-CH67-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH67-SW1">App Extensions</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="HomeKit.html#//apple_ref/doc/uid/TP40006556-CH70-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH70-SW1">HomeKit</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Multitasking.html#//apple_ref/doc/uid/TP40006556-CH38-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH38-SW1">Multitasking</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="NotificationCenter.html#//apple_ref/doc/uid/TP40006556-CH39-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH39-SW1">Notifications</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="SocialMedia.html#//apple_ref/doc/uid/TP40006556-CH34-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH34-SW1">Social Media</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="iCloud.html#//apple_ref/doc/uid/TP40006556-CH35-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH35-SW1">iCloud</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="HealthKit.html#//apple_ref/doc/uid/TP40006556-CH68-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH68-SW1">HealthKit</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="InAppPurchase.html#//apple_ref/doc/uid/TP40006556-CH36-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH36-SW1">In-App Purchase</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="GameCenter.html#//apple_ref/doc/uid/TP40006556-CH37-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH37-SW1">Game Center</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="iAdRichMediaAds.html#//apple_ref/doc/uid/TP40006556-CH41-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH41-SW1">iAd Rich Media Ads</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Printing.html#//apple_ref/doc/uid/TP40006556-CH40-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH40-SW1">AirPrint</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LocationServices.html#//apple_ref/doc/uid/TP40006556-CH42-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH42-SW1">Accessing User Data</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="QuickLook.html#//apple_ref/doc/uid/TP40006556-CH43-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH43-SW1">Quick Look</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Sound.html#//apple_ref/doc/uid/TP40006556-CH44-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH44-SW1">Sound</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="VoiceOverAccessibility.html#//apple_ref/doc/uid/TP40006556-CH45-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH45-SW1">VoiceOver</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Routing.html#//apple_ref/doc/uid/TP40006556-CH32-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH32-SW1">Routing</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="EditMenu.html#//apple_ref/doc/uid/TP40006556-CH46-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH46-SW1">Edit Menu</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="UndoRedo.html#//apple_ref/doc/uid/TP40006556-CH47-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH47-SW1">Undo and Redo</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="KeyboardInputView.html#//apple_ref/doc/uid/TP40006556-CH48-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH48-SW1">Keyboards and Input Views</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH11-SW1"
+            class="part-name">
+            <a href="Bars.html#//apple_ref/doc/uid/TP40006556-CH12-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH12-SW1">UI Elements</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="Bars.html#//apple_ref/doc/uid/TP40006556-CH12-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH12-SW1">Bars</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ContentViews.html#//apple_ref/doc/uid/TP40006556-CH13-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH13-SW1">Content Views</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Controls.html#//apple_ref/doc/uid/TP40006556-CH15-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH15-SW1">Controls</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="Alerts.html#//apple_ref/doc/uid/TP40006556-CH14-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH14-SW1">Temporary Views</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="//apple_ref/doc/uid/TP40006556-CH17-SW1"
+            class="part-name">
+            <a href="IconMatrix.html#//apple_ref/doc/uid/TP40006556-CH27-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH27-SW1">Icon and Image Design</a>
+          <ul class="nav-chapters">
+              <li class="nav-chapter">
+              	<a href="IconMatrix.html#//apple_ref/doc/uid/TP40006556-CH27-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH27-SW1">Icon and Image Sizes</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="AppIcons.html#//apple_ref/doc/uid/TP40006556-CH19-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH19-SW1">App Icon</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="LaunchImages.html#//apple_ref/doc/uid/TP40006556-CH22-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH22-SW1">Launch Files</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="BarIcons.html#//apple_ref/doc/uid/TP40006556-CH21-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH21-SW1">Template Icons</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="WebClipIcons.html#//apple_ref/doc/uid/TP40006556-CH29-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH29-SW1">Web Clip Icons</a>
+              </li>
+              <li class="nav-chapter">
+              	<a href="ResizableImages.html#//apple_ref/doc/uid/TP40006556-CH30-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH30-SW1">Creating Resizable Images</a>
+              </li>
+          </ul>
+        </li>
+        <li data-id="revision-history"
+            class="part-name">
+          <a href="RevisionHistory.html#//apple_ref/doc/uid/TP40006556-CH99-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH99-SW1">Revision History</a>
+          <ul class="nav-chapters">
+            <li class="nav-chapter">
+              <a href="RevisionHistory.html#//apple_ref/doc/uid/TP40006556-CH99-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH99-SW1">Document Revision History</a>
+            </li>
+          </ul>
+        </li>
+    </ul>
+</nav>
+
+      <menu id="bashful" type="toolbar">
+  <div class="shield"></div>
+  <menuitem id="jump_to" class="menu-bar-item closed">
+  <span>On This Page</span>
+  <div class="chevron">
+    <div class="chevy chevron-left"></div>
+    <div class="chevy chevron-right"></div>
+  </div>
+  <menu type="list" class="details">
+      <ul class="list-bullet">
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH67-SW4">Today Widgets</a>
+          </li>
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH67-SW3">Share and Action Extensions</a>
+          </li>
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH67-DontLinkElementID_2">Photo Editing Extensions</a>
+          </li>
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH67-SW5">Document Provider Extensions</a>
+          </li>
+          <li class="item">
+            <a href="#//apple_ref/doc/uid/TP40006556-CH67-DontLinkElementID_3">Custom Keyboards</a>
+          </li>
+      </ul>
+  </menu>
+</menuitem>
+
+</menu>
+<div class="pixel-line"></div>
+<div class="rubber-band-gap"></div>
+<article class="chapter">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67"></a><a name="//apple_ref/doc/uid/TP40006556-CH67-SW1"></a>
+
+  <h2 class='chapter-name'>App Extensions</h2>
+
+
+  
+  	<section class="section">
+  		<p class="para">
+  App extensions increase the reach of your app, giving users access to focused parts of its functionality while they use other apps. For example, while viewing websites in Safari, people can use your Share extension to post an image or an article to your social website. Or while using Photos, people might use your Photo Editing extension to apply a filter to a photo. (In these scenarios, Safari and Photos are called <em>host apps</em> because they give users access to extensions.)
+</p>
+<p class="para">
+  You deliver an app extension inside a fully functional iOS app that you submit to the App Store (an app that contains extensions is called a <em>containing app</em>). After enabling the extension in your containing app, people can use it to perform a quick task while they’re using other apps. For example, while reading about a product in an email message, people might use your Action extension to add the product to a shopping list without having to leave Mail. 
+</p>
+<p class="para">
+  <span class="x-name"><a href="#//apple_ref/doc/uid/TP40006556-CH67-SW2" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH67-SW2">Table 22-1</a></span> lists many of the types of iOS app extensions you can create.
+</p>
+<div class="tableholder">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-SW2"></a>
+  <table class="graybox" border="0" cellspacing="0" cellpadding="5">
+    <caption class="tablecaption"><strong class="caption-number">Table 22-1</strong>Types of app extensions</caption>
+    <thead>
+        <tr>
+            <th scope="col" class="TableHeading_TableRow_TableCell"><p class="para">
+  App extension type
+</p></th>
+            <th scope="col" class="TableHeading_TableRow_TableCell"><p class="para">
+  People use the extension to…
+</p></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td scope="row"><p class="para">
+  Today widget
+</p></td>
+            <td><p class="para">
+  Get a quick update or perform a quick task in the Today view of Notification Center
+</p></td>
+        </tr>
+        <tr>
+            <td scope="row"><p class="para">
+  Share
+</p></td>
+            <td><p class="para">
+  Post to a website or share content with others
+</p></td>
+        </tr>
+        <tr>
+            <td scope="row"><p class="para">
+  Action
+</p></td>
+            <td><p class="para">
+  Manipulate or view content within the context of another app
+</p></td>
+        </tr>
+        <tr>
+            <td scope="row"><p class="para">
+  Photo Editing
+</p></td>
+            <td><p class="para">
+  Edit a photo or video within the Photos app
+</p></td>
+        </tr>
+        <tr>
+            <td scope="row"><p class="para">
+  Document Provider
+</p></td>
+            <td><p class="para">
+  Access and manage a repository of files
+</p></td>
+        </tr>
+        <tr>
+            <td scope="row"><p class="para">
+  Custom keyboard
+</p></td>
+            <td><p class="para">
+  Replace the iOS system keyboard with a custom keyboard
+</p></td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+<p class="para">
+  The following guidelines apply to app extensions of all types; for guidance that’s specific to a particular type of app extension, see the sections below. (To learn how to develop, debug, and distribute an extension, see <em class="u-book"><a href="../../../General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214" data-renderer-version="2" target="_self">App Extension Programming Guide</a></em>.)
+</p>
+<p class="para">
+  <strong class="inline-head">Enable a single task.</strong> An app extension is not a mini version of your app. Instead, an extension performs a narrowly scoped task in the context of the user’s larger goal. For example, an Action extension might give users a different way to view their current content.
+</p>
+<p class="para">
+  <strong class="inline-head">Keep user interactions limited and streamlined.</strong> The best app extensions let people perform the task in just a few taps so that they can return to their earlier context as soon as possible. For example, a Share extension might let people post an image with a single tap.
+</p>
+<p class="para">
+  <strong class="inline-head">Incorporate the name of your containing app into the name of each extension it provides.</strong> Although multiple extensions in one containing app should each have a unique name, you want to make sure that users understand the relationship between your extensions and your app. People encounter extensions in many different contexts, and they’re unlikely to trust an extension if they don’t recognize it. 
+</p>
+<p class="para">
+  <strong class="inline-head">In most cases, use the icon of the containing app.</strong> Displaying a familiar icon is another way an extension can gain users’s trust. Note that in the case of an Action extension, you create a monochromatic version of the containing app’s icon (for details, see <span class="x-name"><a href="#//apple_ref/doc/uid/TP40006556-CH67-SW3" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH67-SW3">Share and Action Extensions</a></span>).
+</p>
+<div class="important clear">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-DontLinkElementID_11"></a>
+  <aside class="aside">
+    <p class="aside-title">Important
+    </p>
+    <p class="para">As with all icons and graphics you design, don’t replicate iOS icons or images and don’t create images of Apple products and designs.
+    </p>
+    
+  </aside>
+</div>
+<p class="para">
+  <strong class="inline-head">Avoid displaying a modal view on top of an extension.</strong> Many extensions are displayed within a modal view by default, and it’s best to avoid layering modal views. Although there are cases where users might see an alert on top of an extension, avoid designing an extension workflow that requires a modal view.
+</p>
+
+		</section> 
+
+
+  <section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-SW4"></a>
+  <h3 class="section-name" tabindex="0">Today Widgets</h3>
+  <p class="para">
+  
+</p><p class="para">
+  People view Today widgets in the Today area of Notification Center. Because people configure the Today area so that it displays the information they value most, design your widget with the goal of earning a place among the user’s most important items.
+</p><figure class="figure">
+  
+  <span class="caption"></span>
+  <img src="Art/widget_experience_2x.png" alt="image: ../Art/widget_experience_2x.png" width="256" height="438" />
+</figure><p class="para">
+  <strong class="inline-head">Design an appearance that looks at home in Notification Center.</strong> When you use the default margins and background appearance provided by Notification Center, your Today widget gives users a consistent experience. For best results, focus on drawing your content and not on drawing backgrounds or other materials. In particular, avoid drawing a solid background.
+</p><div class="note">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-DontLinkElementID_12"></a>
+  <aside class="aside">
+    <p class="aside-title">Note
+    </p>
+    	<p class="para">iOS automatically displays your app icon and title above your custom widget content (the icon appears in the leading margin).
+    	</p>
+    
+  </aside>
+</div><p class="para">
+  <strong class="inline-head">Align content with the widget’s title.</strong> When your widget content aligns with your title, people can easily scan the Today view for the widget they want. Respect the margins in the Today view, and restrain your content to the widget content area shown here.
+</p><figure class="figure">
+  
+  <span class="caption"></span>
+  <img src="Art/WidgetSpec_2x.png" alt="image: ../Art/WidgetSpec_2x.png" width="427" height="451" />
+</figure><p class="para">
+  <strong class="inline-head">In general, use the system font in white to display text.</strong> White text looks good on the default Notification Center background. For secondary text, use the system-provided vibrant appearance (to learn more about this appearance, see <code class="code-voice u-api"><a href="../../../UIKit/Reference/UIVibrancyEffect/index.html#//apple_ref/occ/clm/UIVibrancyEffect/notificationCenterVibrancyEffect" data-renderer-version="2">notificationCenterVibrancyEffect</a></code>).
+</p><p class="para">
+  <strong class="inline-head">Provide a Notification Center experience.</strong> People visit Notification Center to get brief updates or to perform a very simple task, so it’s best when your Today widget displays the right amount of information and limits interactivity. Specifically:
+</p><ul class="list-bullet">
+  <li class="item"><p class="para">
+  Avoid making users scroll or vertically shift the view to see all the information in your Today widget. A widget can expand vertically to show more information, but it’s not a good experience when a widget’s height exceeds the height of Notification Center, because it interferes with scrolling to see other Today widgets.
+</p>
+</li><li class="item"><p class="para">
+  Avoid enabling horizontal swiping or dragging, because it interferes with navigation between Notification Center areas.
+</p>
+</li><li class="item"><p class="para">
+  As much as possible, let users perform a task or open your app with a single tap (note that the keyboard is not available within a Today widget).
+</p>
+</li><li class="item"><p class="para">
+  Optimize performance so that people get useful information immediately. It&#39;s a good idea to cache information locally so that you can display recent information while you get updates. People expect to spend very little time in the Today view, and iOS may terminate Today widgets that don’t use memory wisely. 
+</p>
+</li>
+</ul><p class="para">
+  <strong class="inline-head">If appropriate, let people tap your Today widget to open your app.</strong> Because your Today widget provides a narrowly focused experience, it can work well to direct people to your app for more information or functionality. It’s not a good idea to provide an “Open App” button, so one solution is to make your entire Today widget tappable. Or you might let users tap an appropriate UI object within the widget so that it opens your app to a view that’s focused on that object. For example, the Calendar widget shows today’s events; if users want to get more information about an event, they can tap the event in the widget to view it in the Calendar app.
+</p><div class="note">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-DontLinkElementID_13"></a>
+  <aside class="aside">
+    <p class="aside-title">Note
+    </p>
+    	<p class="para">Giving users a way to open your app from your Today widget can work well, but it’s essential that you also provide useful, timely information in the widget. Users don’t appreciate Today widgets whose only function is to launch an app.
+    	</p>
+    
+  </aside>
+</div><p class="para">
+  <strong class="inline-head">If necessary, let people know if they need to be logged in to get useful information in your Today widget.</strong> If your Today widget requires people to log in to view information, show a message encouraging them to log in and explaining what content will be shown if they do. For example, if your Today widget shows upcoming reservations when users are signed in, you might ask people to “Sign in to MyApp to view upcoming reservations.”
+</p><p class="para">
+  <strong class="inline-head">Don’t create a Today widget that launches an app other than your own.</strong> A Today widget that mimics the behavior of the iOS Home screen doesn’t provide useful functionality to your users.
+</p>
+  
+</section>
+<section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-SW3"></a>
+  <h3 class="section-name" tabindex="0">Share and Action Extensions</h3>
+  <p class="para">
+  People access Share and Action extensions by tapping the Action button in an app. In the activity view controller displayed by the Action button, Action extensions are listed in the bottom row and Share extensions are listed above them. People can use the More buttons to manage the Share and Action extensions that are displayed in the activity view controller shown here.
+</p><figure class="figure">
+  
+  <span class="caption"></span>
+  <img src="Art/share_action_appex_2x.png" alt="image: ../Art/share_action_appex_2x.png" width="256" height="438" />
+</figure><p class="para">
+  A Share or Action extension typically takes as input the content in the user’s current context. While reading an article in Safari, for example, a user might tap the Action button and use a Share extension to post the article to a sharing website or use an Action extension to view a translation of the article.
+</p><div class="note">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-DontLinkElementID_14"></a>
+  <aside class="aside">
+    <p class="aside-title">Note
+    </p>
+    	<p class="para">In the activity view controller, iOS lists only the Action extensions that support the current content type. For example, when the user’s current content is a video, iOS doesn’t list Action extensions that support only text.
+    	</p>
+    
+  </aside>
+</div><p class="para">
+  <strong class="inline-head">As much as possible, use the system-provided UI in a Share extension.</strong> The system-provided compose view controller gives users a consistent experience and automatically supports common tasks, such as previewing and validating standard items, synchronizing content and view animation, and configuring a post. To learn more about using the system-provided compose view controller, see <a href="../../../General/Conceptual/ExtensibilityPG/Share.html#//apple_ref/doc/uid/TP40014214-CH12" data-renderer-version="2" target="_self">Share</a> in <em class="u-book"><a href="../../../General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214" data-renderer-version="2" target="_self">App Extension Programming Guide</a></em>.
+</p><p class="para">
+  <strong class="inline-head">Consider displaying the progress of a lengthy upload in a Share extension’s containing app.</strong> People expect to return to their previous context immediately after tapping an extension’s Post or Share button, even when the shared content is large. You need to make progress updates available, but people don’t want to get a notification every time an upload completes, and there’s no way to programmatically relaunch an extension. In this scenario, it can work well to display the progress of the upload in the containing app, which can handle the task in the background and send a notification if there’s a problem.
+</p><p class="para">
+  <strong class="inline-head">Use a monochromatic version of the app icon for an Action extension.</strong> (In contrast, a Share extension uses its containing app’s full-color app icon.) To create an icon for an Action extension, you might start by creating a stencil version of your app icon. If necessary, simplify the design by focusing on the elements that make your icon unique.
+</p><p class="para">
+  If you provide multiple Action extensions in your containing app, it can work well to create a family of icons for them. Be sure to make every icon in the family look related to the containing app’s icon.
+</p>
+  
+</section>
+<section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-DontLinkElementID_2"></a>
+  <h3 class="section-name" tabindex="0">Photo Editing Extensions</h3>
+  <p class="para">
+  People can use Photo Editing extensions while they view photos or videos in the Photos app. Typically, a Photo Editing extension helps a user apply a filter or make some other edit to a photo or video. After the user confirms the change, the edited content is available in Photos.
+</p><p class="para">
+  Photos provides a modal view that displays the custom UI of your Photo Editing extension. Photos can also display a confirmation view when the user chooses Cancel after applying edits to a photo or video (you’re responsible for enabling this behavior in code).
+</p><p class="para">
+  <strong class="inline-head">Avoid using a navigation bar in your Photo Editing extension.</strong> As you can see here, the modal view that encloses your extension’s view already includes a navigation bar; adding another navigation bar would take space away from your UI and be confusing to users. (By default, Photos displays your view at full-screen height, so your content will appear underneath the built-in navigation bar.)
+</p><figure class="figure">
+  
+  <span class="caption"></span>
+  <img src="Art/photo_filter_appex_2x.png" alt="image: ../Art/photo_filter_appex_2x.png" width="256" height="454" />
+</figure><p class="para">
+  <strong class="inline-head">If appropriate, let users preview their edits.</strong> As much as possible, you want to let users see the results of their work before they close your extension and return to Photos.
+</p>
+  
+</section>
+<section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-SW5"></a>
+  <h3 class="section-name" tabindex="0">Document Provider Extensions</h3>
+  <p class="para">
+  A Document Provider extension helps people access the documents that your app manages from a wide range of other apps. In a host app, a document picker view controller displays the UI that your extension provides (to learn more about the document picker view controller, see <em class="u-book"><a href="../../../UIKit/Reference/UIDocumentPickerViewController_Class/index.html#//apple_ref/doc/uid/TP40014342" data-renderer-version="2" target="_self">UIDocumentPickerViewController Class Reference</a></em>).
+</p><div class="note">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-DontLinkElementID_15"></a>
+  <aside class="aside">
+    <p class="aside-title">Note
+    </p>
+    	<p class="para">A Document Provider extension can consist of two separate parts: a Document Picker View Controller extension and a File Provider extension. The Document Picker View Controller extension contains your custom UI; the File Provider extension implements access to files. For simplicity, this section uses the term <em>Document Provider extension</em> to refer to the UI and experience provided by the Document Picker View Controller part of the extension.
+    	</p>
+    
+  </aside>
+</div><p class="para">
+  <strong class="inline-head">Avoid using a navigation bar in your Document Provider extension.</strong> iOS displays your extension’s custom UI within the navigation bar–based interface of the document picker view controller. Displaying a second navigation bar below the built-in bar is confusing to users and takes space away from your content. (By default, the document picker view controller displays your view at full-screen height, so your content appears underneath the built-in navigation bar.)
+</p><figure class="figure">
+  
+  <span class="caption"></span>
+  <img src="Art/doc_provider_appex_2x.png" alt="image: ../Art/doc_provider_appex_2x.png" width="256" height="438" />
+</figure>
+  
+</section>
+<section class="section">
+  <a name="//apple_ref/doc/uid/TP40006556-CH67-DontLinkElementID_3"></a>
+  <h3 class="section-name" tabindex="0">Custom Keyboards</h3>
+  <p class="para">
+  People use a keyboard extension to replace the iOS keyboard with a custom keyboard throughout the system. After enabling a keyboard extension, people get the custom keyboard when they enter any text entry area except for secure text entry areas (such as a password field) and phone pad areas (such as a phone number field in Contacts).
+</p><p class="para">
+  <strong class="inline-head">Provide an obvious way for users to switch to the next keyboard.</strong>  People are very familiar with the iOS globe key, and they expect a similar experience in your keyboard.
+</p><figure class="figure">
+  
+  <span class="caption"></span>
+  <img src="Art/alternate_keyboards_2x.png" alt="image: ../Art/alternate_keyboards_2x.png" width="256" height="438" />
+</figure><p class="para">
+  <strong class="inline-head">If appropriate, include a tutorial in your containing app.</strong> If necessary, use your custom keyboard’s containing app to give people instructions on how to enable or use your keyboard. Don’t put this information directly into the keyboard itself, because it may confuse people when they try to use the keyboard.
+</p>
+  
+</section>
+
+  	
+ 	<section id="next_previous" class="">
+    		<p class="previous-link"><a href="Research.html#//apple_ref/doc/uid/TP40006556-CH72-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH72-SW1">Research Apps</a></p>
+  			<p class="next-link"><a href="HomeKit.html#//apple_ref/doc/uid/TP40006556-CH70-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH70-SW1">HomeKit</a></p>
+
+    <p class="copyright">Copyright &#x00a9; 2016 Apple Inc. All rights reserved. 
+  <a class="link" href="http://www.apple.com/legal/terms/site.html" target="_blank" rel="external">Terms of Use</a> | 
+  <a class="link" href="http://www.apple.com/privacy/" target="_blank" rel="external">Privacy Policy</a> | 
+  <a href="RevisionHistory.html#//apple_ref/doc/uid/TP40006556-CH99-SW1" data-renderer-version="2" data-id="//apple_ref/doc/uid/TP40006556-CH99-SW1">Updated: 2016-03-21</a>
+</p>
+  </section>
+</article>
+
+    </div>
+    <div id='big_button'></div>
+    <footer id="footer">
+  <div class="content-wrapper">
+  	<div id="leave_feedback" class="button" role="button" tabindex="0">Feedback</div>
+  </div>
+  <script src="_assets/developer.apple.com/da4d8fdf38a0-devpubs-1.6.2.js" type="text/javascript" charset="utf-8"></script>
+  <script src="_assets/developer.apple.com/a804a65f067e-feedback-1.6.2.js" type="text/javascript" charset="utf-8"></script>
+  <div id="_omniture_top">
+<!-- SiteCatalyst code version: H.8. Copyright 1997-2006 Omniture, Inc. -->
+<script type="text/javascript">
+/* RSID: */
+var s_account="appleglobal,appleusdeveloper,dappdeveloperlib"
+</script>
+
+<script type="text/javascript" src="_assets/www.apple.com/ab5e8cf28d19-s_code_h.js"></script>
+<script type="text/javascript">
+s.pageName=AC.Tracking.pageName();
+s.channel="www.us.developer"
+
+/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+var s_code=s.t();if(s_code)document.write(s_code)</script>
+<!-- End SiteCatalyst code version: H.8. -->
+</div>
+
+</footer>
+
+    
+  </body>
+    <div id="blackout">
+    <div id="preload"></div>
+</div>
+<div id="modal" aria-hidden="true">
+    <div id="closebox" tabindex="0" aria-label="Close feedback form" role="button"></div>
+    <div id="sending" class="hidden">
+        <h2 tabindex="0">Sending feedback&hellip;</h2>
+        <div id="sending_img"></div>
+    </div>
+    <div id="error" class="hidden">
+        <h2 tabindex="0">We&rsquo;re sorry, an error has occurred.</h2>
+        <p>Please try submitting your feedback later.</p>
+        <div id="error_icon"></div>
+    </div>
+    <div id="success" class="hidden">
+        <h2 tabindex="0">Thank you for providing feedback!</h2>
+        <p>Your input helps improve our developer documentation.</p>
+        <div id="thank_you_icon"></div>
+    </div>
+    
+    <form id="feedback" action="#" method="post">
+        <div class="left-leaf">
+            <h2 id="helpful_title" data-asterisk="a1" tabindex="0">How helpful is this document?</h2>     
+            <sup id="a1" class="asterisk" aria-hidden="true">*</sup>
+
+            <div id="star_group" role="radiogroup" aria-required="true">
+                <label> 
+                    <input class="radio" type="radio" name="helped" value="1" /> 
+                    Very helpful
+                </label>
+                <label> 
+                    <input class="radio" type="radio" name="helped" value="2" /> 
+                    Somewhat helpful
+                </label>
+                <label>
+                    <input class="radio" type="radio" name="helped" value="3" /> 
+                    Not helpful
+                </label>
+            </div>
+        </div>
+        <div class="right-leaf">
+            <h2>How can we improve this document?</h2>
+            <div id="improve" class="checkboxes">
+                <label>
+                    <input type="checkbox" name="typo" /> 
+                    Fix typos or links
+                </label>
+                <label>
+                    <input type="checkbox" name="infoIncorrect" /> 
+                    Fix incorrect information
+                </label>
+                <label>
+                    <input type="checkbox" name="needs_examples" /> 
+                    Add or update code samples
+                </label>
+                <label>
+                    <input type="checkbox" name="needs_art" /> 
+                    Add or update illustrations
+                </label>
+                <label>
+                    <input type="checkbox" name="missingInfo" /> 
+                    Add information about...
+                </label>
+            </div>
+        </div>
+
+        <textarea id="comment" name="problem" cols="70" rows="8" placeholder="Please tell us more about your experience with this document" data-asterisk="a2" required></textarea>
+        <sup id="a2" class="asterisk" aria-hidden="true">*</sup>
+
+        <p class="fineprint">
+            <em aria-hidden="true"><span>*</span> Required information</em>
+        </p> 
+
+        <input id="submit" type="button" value="Send" />
+
+        <section id="legal">
+            <p>
+                To submit a product bug or enhancement request, please visit the 
+                <a href="https://developer.apple.com/bugreporter/" target="_blank">Bug Reporter</a> 
+                page.
+            </p>
+            <p>
+                Please read <a href="http://www.apple.com/legal/policies/ideas.html" target="_blank">Apple's Unsolicited Idea Submission Policy</a> 
+                before you send us your feedback.
+            </p> 
+        </section>
+    </form>
+</div>
+
+</div>
+</html>
